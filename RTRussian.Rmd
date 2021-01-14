@@ -17,6 +17,7 @@ library(SnowballC)
 library(wordcloud)
 library(RColorBrewer)
 library(RCurl)
+library(corpus)
 library(textclean)
 library(lubridate)
 library(gt)
@@ -63,13 +64,17 @@ corpus <- tm_map(corpus, removeWords, stopwords("russian"))
 
 ```{r}
 nonstem.corpus <- corpus
-corpus <- tm_map(corpus, stemDocument)
+# corpus <- tm_map(corpus, stemDocument)
 # Not convinced that this stems anything... this may be an issue going forward.
+
+view(nonstem.corpus)
 ```
 
 ```{r}
 nDTM <- DocumentTermMatrix(nonstem.corpus)
-DTM <- DocumentTermMatrix(corpus)
+#  DTM <- DocumentTermMatrix(corpus)
+
+view(nDTM)
 ```
 
 ```{r}
@@ -80,19 +85,35 @@ sums <- arrange(sums, desc(count))
 head <- sums[1:75,]
 
 sums2 <- as.data.frame(as.matrix(nDTM))
-sums2d <- as.data.frame(as.matrix(DTM))
+# sums2d <- as.data.frame(as.matrix(DTM))
 ```
 
 ```{r}
 sums2$ArtDate <- data$date
-sums2d$ArtDate <- data$date
+# sums2d$ArtDate <- data$date
+
+# view(sums2)
+
+# sums2R <- sums2
+# sums2Rd <- sums2d
+```
+
+```{r}
+names <- colnames(sums2)
+
+names <- text_tokens(names, stemmer = "ru")
+
+names2 <- sapply(names, `[[`, 1)
+
+names3 <- unlist(names2, use.names=FALSE)
+
+colnames(sums2) <- names3
 
 view(sums2)
 ```
 
 ```{r}
 sums2 %>%
-  # The group_by and summarise below sum the articles by date. Alt version c'd out below.
   group_by(ArtDate) %>% 
   summarise(Frequency = sum(её)) %>%
   ggplot(aes(x = ArtDate, y = Frequency)) +
@@ -102,9 +123,9 @@ sums2 %>%
     title = "Term Frequency Per Article Over Time",
     subtitle = "Term: 'её', RT Search Term: 'TEST'",
     x = "Date",
-    y = "Frequency"
-    # Comment/uncomment caption below as needed. Add/delete comma in line above, too.
-    # caption = "Stemmed."
+    y = "Frequency",
+    # All terms in the Russian version are stemmed.
+    caption = "Stemmed."
   ) +
   scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
