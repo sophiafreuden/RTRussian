@@ -67,14 +67,14 @@ nonstem.corpus <- corpus
 # corpus <- tm_map(corpus, stemDocument)
 # Not convinced that this stems anything... this may be an issue going forward.
 
-view(nonstem.corpus)
+# view(nonstem.corpus)
 ```
 
 ```{r}
 nDTM <- DocumentTermMatrix(nonstem.corpus)
 #  DTM <- DocumentTermMatrix(corpus)
 
-view(nDTM)
+# view(nDTM)
 ```
 
 ```{r}
@@ -84,32 +84,67 @@ colnames(sums) <- c("term", "count")
 sums <- arrange(sums, desc(count))
 head <- sums[1:75,]
 
+# view(head)
+
 sums2 <- as.data.frame(as.matrix(nDTM))
-# sums2d <- as.data.frame(as.matrix(DTM))
 ```
 
 ```{r}
 sums2$ArtDate <- data$date
-# sums2d$ArtDate <- data$date
 
 # view(sums2)
 
-# sums2R <- sums2
-# sums2Rd <- sums2d
+# badcols <- c(
+#   твновости,
+#   emailinforttvru,
+#   автономная,
+#   адрес,
+#   ано,
+#   боровая,
+#   гг,
+#   данных,
+#   доб,
+#   защищены,
+#   изданиеrtcomзарегистрировано,
+#   использует,
+#   некоммерческая,
+#   персональных,
+#   признанные,
+#   редактор,
+#   редакции,
+#   роскомнадзором,
+#   сайт,
+#   свидетельство,
+#   сетевое,
+#   симоньян,
+#   улица,
+#   файлыcookies,
+#   фс,
+#   экстремистскими,
+#   эл
+#   )
+
+# sums2 <- select(sums2, -badcols)
 ```
 
 ```{r}
 names <- colnames(sums2)
 
-names <- text_tokens(names, stemmer = "ru")
+names2 <- text_tokens(names, stemmer = "ru")
 
-names2 <- sapply(names, `[[`, 1)
+names3 <- sapply(names, `[[`, 1)
 
-names3 <- unlist(names2, use.names=FALSE)
+names4 <- unlist(names2, use.names=FALSE)
 
-colnames(sums2) <- names3
+sums2d <- sums2
 
-view(sums2)
+colnames(sums2d) <- names4 # This creates a stemmed version of the file. Unfortunately,
+# there will be columns that have the same name because of how Russian works. Adding these
+# columns together in R seems like a hassle. If there are issues plotting with the stemmed
+# dataset (sums2d), it might be better to use the non-stemmed one (sums2).
+
+# view(sums2)
+# view(sums2d)
 ```
 
 ```{r}
@@ -124,7 +159,7 @@ sums2 %>%
     subtitle = "Term: 'её', RT Search Term: 'TEST'",
     x = "Date",
     y = "Frequency",
-    # All terms in the Russian version are stemmed.
+    # Comment/uncomment caption below as needed. Add/delete comma in line above, too.
     caption = "Stemmed."
   ) +
   scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
@@ -132,5 +167,10 @@ sums2 %>%
   ggsave("plot1.png", width = 10)
 ```
 
+```{r}
+wordcloud(words = head$term, freq = head$count, min.freq = 40,
+  max.words=100, random.order=FALSE, rot.per=0.35, 
+  colors=brewer.pal(8, "Dark2"))
+```
 
 
