@@ -45,3 +45,71 @@ data <- data[-4,]
 view(data)
 ```
 
+```{r}
+corpus <- SimpleCorpus(VectorSource(data$content))
+```
+
+```{r}
+corpus <- tm_map(corpus, stripWhitespace)
+
+corpus <- tm_map(corpus, content_transformer(tolower))
+
+corpus <- tm_map(corpus, removeNumbers)
+
+corpus <- tm_map(corpus, removePunctuation)
+
+corpus <- tm_map(corpus, removeWords, stopwords("russian"))
+```
+
+```{r}
+nonstem.corpus <- corpus
+corpus <- tm_map(corpus, stemDocument)
+# Not convinced that this stems anything... this may be an issue going forward.
+```
+
+```{r}
+nDTM <- DocumentTermMatrix(nonstem.corpus)
+DTM <- DocumentTermMatrix(corpus)
+```
+
+```{r}
+sums <- as.data.frame(colSums(as.matrix(nDTM)))
+sums <- rownames_to_column(sums) 
+colnames(sums) <- c("term", "count")
+sums <- arrange(sums, desc(count))
+head <- sums[1:75,]
+
+sums2 <- as.data.frame(as.matrix(nDTM))
+sums2d <- as.data.frame(as.matrix(DTM))
+```
+
+```{r}
+sums2$ArtDate <- data$date
+sums2d$ArtDate <- data$date
+
+view(sums2)
+```
+
+```{r}
+sums2 %>%
+  # The group_by and summarise below sum the articles by date. Alt version c'd out below.
+  group_by(ArtDate) %>% 
+  summarise(Frequency = sum(её)) %>%
+  ggplot(aes(x = ArtDate, y = Frequency)) +
+  geom_point() +
+  geom_smooth(method = 'loess') +
+  labs(
+    title = "Term Frequency Per Article Over Time",
+    subtitle = "Term: 'её', RT Search Term: 'TEST'",
+    x = "Date",
+    y = "Frequency"
+    # Comment/uncomment caption below as needed. Add/delete comma in line above, too.
+    # caption = "Stemmed."
+  ) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  ggsave("plot1.png", width = 10)
+```
+
+
+
