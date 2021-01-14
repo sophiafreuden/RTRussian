@@ -1,0 +1,47 @@
+---
+title: "RTRussian"
+author: "Sophia Freuden"
+date: "1/13/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{r}
+library(tm)
+library(SentimentAnalysis)
+library(syuzhet)
+library(SnowballC)
+library(wordcloud)
+library(RColorBrewer)
+library(RCurl)
+library(textclean)
+library(lubridate)
+library(gt)
+library(tidyverse)
+```
+
+```{r}
+col_types = cols(
+  date = col_character(),
+  title = col_character(),
+  content = col_character(),
+  URL = col_character()
+)
+
+data <- read_delim("RT_rus_test.txt", delim = "*", col_types = col_types)
+
+data$date[4] <- "4 3 2019"
+
+data <- data %>%
+  mutate(date = dmy(date))
+
+data <- data[-4,]
+```
+
+```{r}
+view(data)
+```
+
