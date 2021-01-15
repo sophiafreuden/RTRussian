@@ -29,14 +29,19 @@ col_types = cols(
   URL = col_character()
 )
 
-data <- read_delim("RT_rus_test.txt", delim = "*", col_types = col_types)
+data <- read_delim("soros.txt", delim = "*", col_types = col_types)
 
-data$date[4] <- "4 3 2019"
+data <- data %>% 
+  filter(date != "Skipped")
 
-data <- data %>%
-  mutate(date = dmy(date))
+# view(data)
 
-data <- data[-4,]
+data <- data %>% # This usually just strips all the commas out of the date column.
+  mutate(date = dmy(date)) # Be sure to double check, however.
+
+# view(data)
+
+data <- data[-c(69, 114, 126, 168, 199),] # Adjust numbers to be rows where content = NA
 ```
 
 ```{r}
@@ -92,9 +97,9 @@ names <- colnames(sums2)
 
 names2 <- text_tokens(names, stemmer = "ru")
 
-names3 <- sapply(names, `[[`, 1)
+names3 <- sapply(names2, `[[`, 1)
 
-names4 <- unlist(names2, use.names=FALSE)
+names4 <- unlist(names3, use.names=FALSE)
 
 sums2d <- sums2
 
@@ -104,23 +109,27 @@ colnames(sums2d) <- names4 # This creates a stemmed version of the file. Unfortu
 # dataset (sums2d), it might be better to use the non-stemmed one (sums2).
 
 # view(sums2)
-# view(sums2d)
+# view(sums2d) Trying to use this one, it doesn't work as there are columns with the same names. In that case, I might just have to keep using the non-stemmed version and acknowledge
+# its incomplete accuracy.
+
+# You will often see English/non-Russian words copied into the article content. I've decided
+# to leave those as is.
 ```
 
 ```{r}
 sums2 %>%
   group_by(ArtDate) %>% 
-  summarise(Frequency = sum(её)) %>%
+  summarise(Frequency = sum(евромайдан)) %>%
   ggplot(aes(x = ArtDate, y = Frequency)) +
   geom_point() +
   geom_smooth(method = 'loess') +
   labs(
     title = "Term Frequency Per Article Over Time",
-    subtitle = "Term: 'её' (ENGLISH TRANSLATION), RT Search Term: 'TEST' (ENGLISH TRANSLATION)",
+    subtitle = "Term: 'евромайдан' (euromaidan), RT Search Term: 'сорос' (soros)",
     x = "Date",
     y = "Frequency",
-    # Comment/uncomment caption below as needed. Add/delete comma in line above, too.
-    caption = "Stemmed."
+    # Comment/uncomment caption as neeed.
+    caption = "Declined terms combined."
   ) +
   scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
