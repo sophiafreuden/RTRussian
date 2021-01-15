@@ -119,16 +119,16 @@ colnames(sums2d) <- names4 # This creates a stemmed version of the file. Unfortu
 ```{r}
 sums2 %>%
   group_by(ArtDate) %>% 
-  summarise(Frequency = sum(сорос)) %>%
+  summarise(Frequency = sum(запад)) %>%
   ggplot(aes(x = ArtDate, y = Frequency)) +
   geom_point() +
   geom_smooth(method = 'loess') +
   labs(
     title = "Term Frequency Per Article Over Time",
-    subtitle = "Term: 'сорос' (soros), RT Search Term: 'клинтон майдан' (clinton maidan)",
+    subtitle = "Term: 'запад' (west), RT Search Term: 'клинтон майдан' (clinton maidan)",
     x = "Date",
     y = "Frequency"
-    # Comment/uncomment caption as neeed.
+    # Comment/uncomment caption as neeed
     # caption = "Declined terms combined."
   ) +
   scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
