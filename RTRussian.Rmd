@@ -64,17 +64,12 @@ corpus <- tm_map(corpus, removeWords, stopwords("russian"))
 
 ```{r}
 nonstem.corpus <- corpus
-# corpus <- tm_map(corpus, stemDocument)
-# Not convinced that this stems anything... this may be an issue going forward.
 
 # view(nonstem.corpus)
 ```
 
 ```{r}
 nDTM <- DocumentTermMatrix(nonstem.corpus)
-#  DTM <- DocumentTermMatrix(corpus)
-
-# view(nDTM)
 ```
 
 ```{r}
