@@ -119,13 +119,13 @@ colnames(sums2d) <- names4 # This creates a stemmed version of the file. Unfortu
 ```{r}
 sums2 %>%
   group_by(ArtDate) %>% 
-  summarise(Frequency = sum(евромайдан)) %>%
+  summarise(Frequency = sum(демократическойпартии)) %>%
   ggplot(aes(x = ArtDate, y = Frequency)) +
   geom_point() +
   geom_smooth(method = 'loess') +
   labs(
     title = "Term Frequency Per Article Over Time",
-    subtitle = "Term: 'евромайдан' (euromaidan), RT Search Term: 'сорос' (soros)",
+    subtitle = "Term: 'демократическойпартии' (democraticparty), RT Search Term: 'сорос' (soros)",
     x = "Date",
     y = "Frequency",
     # Comment/uncomment caption as neeed.
@@ -169,7 +169,7 @@ multsum2 %>%
   gt() %>%
   tab_header(
     title = "Sentiment Polarization Summary",
-    subtitle = "RT Search Term: 'апельсин' (ENGLISH TRANSLATION)"
+    subtitle = "RT Search Term: 'сорос' (soros)"
     )  %>% 
   tab_source_note(
     source_note = "Note special methodology for Russian sentiment analysis."
