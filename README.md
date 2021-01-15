@@ -9,7 +9,7 @@ The RT Russian disclaimer replaced with a single space (note декабря gets
 
 Guillemets « and » replaced with a single space
 
-Em dash — reokaced with a single space
+Em dash — replaced with a single space
 
 And replace all double spaces with a single space as many times as needed.
 
