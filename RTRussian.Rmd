@@ -185,6 +185,10 @@ multsum2 %>%
   gtsave("table1.png", zoom = 2.5, expand = 10)
 ```
 
+```{r}
+# No emotion analysis available in Russian for R as far as I can tell.
+```
+
 
 
 
