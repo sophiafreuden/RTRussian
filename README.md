@@ -12,3 +12,5 @@ Guillemets « and » replaced with a single space
 Em dash — reokaced with a single space
 
 And replace all double spaces with a single space as many times as needed.
+
+russiandict source: https://github.com/text-machine-lab/ Repo: sentimental
