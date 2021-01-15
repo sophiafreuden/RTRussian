@@ -119,7 +119,7 @@ sums2 %>%
   geom_smooth(method = 'loess') +
   labs(
     title = "Term Frequency Per Article Over Time",
-    subtitle = "Term: 'её', RT Search Term: 'TEST'",
+    subtitle = "Term: 'её' (ENGLISH TRANSLATION), RT Search Term: 'TEST' (ENGLISH TRANSLATION)",
     x = "Date",
     y = "Frequency",
     # Comment/uncomment caption below as needed. Add/delete comma in line above, too.
@@ -164,11 +164,11 @@ multsum2 %>%
   gt() %>%
   tab_header(
     title = "Sentiment Polarization Summary",
-    subtitle = "RT Search Term: 'апельсин'"
+    subtitle = "RT Search Term: 'апельсин' (ENGLISH TRANSLATION)"
     )  %>% 
-  # #tab_source_note(
-  #   source_note = "RT Search Term was entered with quotation marks for accuracy."
-  #   ) %>% 
+  tab_source_note(
+    source_note = "Note special methodology for Russian sentiment analysis."
+     ) %>% 
   cols_label(
     V1 = "Min.",
     V2 = "1st Qu.",
