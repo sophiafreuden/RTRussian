@@ -1,6 +1,6 @@
 # RTRussian
 
-Be sure to find and replace the following things IN THIS ORDER from the txt file:
+Be sure to find and replace the following things IN THIS ORDER from the txt file in NotePad or equivalent:
 
 Russian months in genitive replaced with appropriate calendar numbers
 
@@ -12,5 +12,7 @@ Guillemets « and » replaced with a single space
 Em dash — replaced with a single space
 
 And replace all double spaces with a single space as many times as needed.
+
+IN R: Delete tibble rows that have a skippped title, date, etc.
 
 russiandict source: https://github.com/text-machine-lab/ Repo: sentimental
