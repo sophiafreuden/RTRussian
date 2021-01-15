@@ -11,9 +11,6 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ```{r}
 library(tm)
-library(SentimentAnalysis)
-library(syuzhet)
-library(SnowballC)
 library(wordcloud)
 library(RColorBrewer)
 library(RCurl)
@@ -151,8 +148,7 @@ ru_sentiment <- sums %>%
   inner_join(rudict, by = "word")
 
 ru_sentiment <- ru_sentiment %>% 
-  mutate(mult = (count * score)) # I'm not sure you need this mutation. I will have to look to see what I've done in the RTEnglish rmd for this.
-
+  mutate(mult = (count * score)) # So this just fundamentally differs from the RTEnglish file in its methodology. It's important to multiply the terms by the frequency, so then we get a true average for the RT Russian search term.
 
 multsum <- tibble(summary(ru_sentiment$mult))
 
@@ -183,8 +179,3 @@ multsum2 %>%
 ```{r}
 # No emotion analysis available in Russian for R as far as I can tell.
 ```
-
-
-
-
-
