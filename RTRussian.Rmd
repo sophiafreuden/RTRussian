@@ -43,7 +43,7 @@ data <- data[-4,]
 ```
 
 ```{r}
-view(data)
+# view(data)
 ```
 
 ```{r}
@@ -80,7 +80,7 @@ nDTM <- DocumentTermMatrix(nonstem.corpus)
 ```{r}
 sums <- as.data.frame(colSums(as.matrix(nDTM)))
 sums <- rownames_to_column(sums) 
-colnames(sums) <- c("term", "count")
+colnames(sums) <- c("word", "count")
 sums <- arrange(sums, desc(count))
 head <- sums[1:75,]
 
@@ -93,38 +93,6 @@ sums2 <- as.data.frame(as.matrix(nDTM))
 sums2$ArtDate <- data$date
 
 # view(sums2)
-
-# badcols <- c(
-#   твновости,
-#   emailinforttvru,
-#   автономная,
-#   адрес,
-#   ано,
-#   боровая,
-#   гг,
-#   данных,
-#   доб,
-#   защищены,
-#   изданиеrtcomзарегистрировано,
-#   использует,
-#   некоммерческая,
-#   персональных,
-#   признанные,
-#   редактор,
-#   редакции,
-#   роскомнадзором,
-#   сайт,
-#   свидетельство,
-#   сетевое,
-#   симоньян,
-#   улица,
-#   файлыcookies,
-#   фс,
-#   экстремистскими,
-#   эл
-#   )
-
-# sums2 <- select(sums2, -badcols)
 ```
 
 ```{r}
@@ -168,9 +136,56 @@ sums2 %>%
 ```
 
 ```{r}
-wordcloud(words = head$term, freq = head$count, min.freq = 40,
+# Change min.freq below as needed per resultsno pulled from Python scrape.
+wordcloud(words = head$word, freq = head$count, min.freq = 25,
   max.words=100, random.order=FALSE, rot.per=0.35, 
   colors=brewer.pal(8, "Dark2"))
 ```
+
+```{r}
+col_types2 <- cols(
+  word = col_character(),
+  score = col_number()
+)
+
+rudict <- read_csv("russiandict.csv", col_types = col_types2)
+```
+
+```{r}
+ru_sentiment <- sums %>% 
+  inner_join(rudict, by = "word")
+
+ru_sentiment <- ru_sentiment %>% 
+  mutate(mult = (count * score)) # I'm not sure you need this mutation. I will have to look to see what I've done in the RTEnglish rmd for this.
+
+
+multsum <- tibble(summary(ru_sentiment$mult))
+
+multsum2 <- as.data.frame(t(multsum))
+```
+
+```{r}
+multsum2 %>%
+  gt() %>%
+  tab_header(
+    title = "Sentiment Polarization Summary",
+    subtitle = "RT Search Term: 'апельсин'"
+    )  %>% 
+  # #tab_source_note(
+  #   source_note = "RT Search Term was entered with quotation marks for accuracy."
+  #   ) %>% 
+  cols_label(
+    V1 = "Min.",
+    V2 = "1st Qu.",
+    V3 = "Median",
+    V4 = "Mean",
+    V5 = "3rd Qu.",
+    V6 = "Max."
+    ) %>% 
+  gtsave("table1.png", zoom = 2.5, expand = 10)
+```
+
+
+
 
 
