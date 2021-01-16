@@ -29,7 +29,7 @@ col_types = cols(
   URL = col_character()
 )
 
-data <- read_delim("klinton-maidan.txt", delim = "*", col_types = col_types)
+data <- read_delim("klinton-protesty.txt", delim = "*", col_types = col_types)
 
 data <- data %>% 
   filter(date != "Skipped")
@@ -119,13 +119,14 @@ colnames(sums2d) <- names4 # This creates a stemmed version of the file. Unfortu
 ```{r}
 sums2 %>%
   group_by(ArtDate) %>% 
-  summarise(Frequency = sum(запад)) %>%
+  summarise(Frequency = sum(макфол)) %>%
   ggplot(aes(x = ArtDate, y = Frequency)) +
   geom_point() +
   geom_smooth(method = 'loess') +
   labs(
     title = "Term Frequency Per Article Over Time",
-    subtitle = "Term: 'запад' (west), RT Search Term: 'клинтон майдан' (clinton maidan)",
+    subtitle = "Term: 'макфол' (mcfaul)
+    RT Search Term: 'клинтон оранжевая революция' (clinton orange revolution)",
     x = "Date",
     y = "Frequency"
     # Comment/uncomment caption as neeed
@@ -138,7 +139,7 @@ sums2 %>%
 
 ```{r}
 # Change min.freq below as needed per resultsno pulled from Python scrape.
-wordcloud(words = head$word, freq = head$count, min.freq = 25,
+wordcloud(words = head$word, freq = head$count, min.freq = 10,
   max.words=100, random.order=FALSE, rot.per=0.35, 
   colors=brewer.pal(8, "Dark2"))
 ```
@@ -169,7 +170,7 @@ multsum2 %>%
   gt() %>%
   tab_header(
     title = "Sentiment Polarization Summary",
-    subtitle = "RT Search Term: 'клинтон майдан' (clinton maidan)"
+    subtitle = "RT Search Term: 'клинтон оранжевая революция' (clinton orange revolution)"
     )  %>% 
   tab_source_note(
     source_note = "Note special methodology for Russian sentiment analysis."

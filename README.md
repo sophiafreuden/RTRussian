@@ -13,6 +13,6 @@ Em dash — replaced with a single space
 
 And replace all double spaces with a single space as many times as needed.
 
-IN R: Delete tibble rows that have a skippped title, date, etc.
+IN R: Delete tibble rows that have a skippped title date.
 
 russiandict source: https://github.com/text-machine-lab/ Repo: sentimental
