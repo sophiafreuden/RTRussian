@@ -111,4 +111,19 @@ u_klinton <- unique(all_klinton$URL)
 # soros: 254; u_klinton: 214; makfol: 238. Note that sum of these three != u as there is some overlap between the three of them (but not within the three of them).
 ```
 
+```{r}
+# Search terms that are too big to process:
+# klinton rossiya
+# klinton ukraina
+# klinton demokraticheskaya partiya
+# klinton vybory
+
+# Could do:
+# klinton soros: 59
+# klinton grazhdanskoe obschestvo
+
+# Order of search terms doesn't matter.
+```
+
+
 
