@@ -122,6 +122,9 @@ u_klinton <- unique(all_klinton$URL)
 # klinton soros: 59
 # klinton grazhdanskoe obschestvo
 
+# Too small:
+# klinton makfol soros: 1
+
 # Order of search terms doesn't matter.
 ```
 
