@@ -1,0 +1,114 @@
+---
+title: "DataComp"
+author: "Sophia Freuden"
+date: "1/22/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{r}
+library(lubridate)
+library(tidyverse)
+```
+
+```{r}
+col_types = cols(
+  date = col_character(),
+  title = col_character(),
+  content = col_character(),
+  URL = col_character()
+)
+```
+
+```{r}
+data1 <- read_delim("klinton-maidan/klinton-maidan.txt", delim = "*", col_types = col_types)
+
+data1 <- data1 %>% 
+  filter(date != "Skipped")
+
+data1 <- data1 %>%
+  mutate(date = dmy(date))
+```
+
+```{r}
+data2 <- read_delim("klinton-oranzhevaya-revolyutsiya/klinton-oranzhevaya-revolyutsiya.txt", delim = "*", col_types = col_types)
+
+data2 <- data2 %>% 
+  filter(date != "Skipped")
+
+data2 <- data2 %>%
+  mutate(date = dmy(date))
+```
+
+```{r}
+data3 <- read_delim("klinton-protesty/klinton-protesty.txt", delim = "*", col_types = col_types)
+
+data3 <- data3 %>% 
+  filter(date != "Skipped")
+
+data3 <- data3 %>%
+  mutate(date = dmy(date))
+```
+
+```{r}
+data4 <- read_delim("makfol/makfol.txt", delim = "*", col_types = col_types)
+
+data4 <- data4 %>% 
+  filter(date != "Skipped")
+
+data4 <- data4 %>%
+  mutate(date = dmy(date))
+
+data4 <- data4[-c(17, 21),]
+```
+
+```{r}
+data5 <- read_delim("soros/soros.txt", delim = "*", col_types = col_types)
+
+data5 <- data5 %>% 
+  filter(date != "Skipped")
+
+data5 <- data5 %>%
+  mutate(date = dmy(date))
+
+data5 <- data5[-c(69, 114, 126, 168, 199),]
+```
+
+```{r}
+data12 <- bind_rows(data1, data2)
+```
+
+```{r}
+data123 <- bind_rows(data12, data3)
+```
+
+```{r}
+data1234 <- bind_rows(data123, data4)
+```
+
+```{r}
+all_data <- bind_rows(data1234, data5)
+```
+
+```{r}
+u <- unique(all_data$URL)
+# u is a character vector length 670; raw all_data length 731.
+```
+
+```{r}
+all_klinton <- data123
+```
+
+```{r}
+u_klinton <- unique(all_klinton$URL)
+# u_klinton is a character vector length 214; raw all_data length 239.
+```
+
+```{r}
+# soros: 254; u_klinton: 214; makfol: 238. Note that sum of these three != u as there is some overlap between the three of them (but not within the three of them).
+```
+
+
