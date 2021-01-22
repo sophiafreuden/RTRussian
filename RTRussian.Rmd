@@ -29,7 +29,7 @@ col_types = cols(
   URL = col_character()
 )
 
-data <- read_delim("klinton-protesty/klinton-protesty.txt", delim = "*", col_types = col_types)
+data <- read_delim("klinton-grazhdanskoe-obschestvo.txt", delim = "*", col_types = col_types)
 
 data <- data %>% 
   filter(date != "Skipped")
@@ -100,7 +100,7 @@ names <- colnames(sums2)
 
 names2 <- text_tokens(names, stemmer = "ru")
 
-names3 <- sapply(names2, `[[`, 1)
+names3 <- sapply(names2, `[[`, 1) # Sometimes this throws an error. Because I haven't found a use for sums2d, I don't think it really matters. It still seems to work despite the error.
 
 names4 <- unlist(names3, use.names=FALSE)
 
@@ -122,26 +122,27 @@ colnames(sums2d) <- names4 # This creates a stemmed version of the file. Unfortu
 ```{r}
 sums2 %>%
   group_by(ArtDate) %>% 
-  summarise(Frequency = sum(браудера)) %>%
+  summarise(Frequency = sum(сша)) %>%
   ggplot(aes(x = ArtDate, y = Frequency)) +
   geom_point() +
   geom_smooth(method = 'loess') +
   labs(
     title = "Term Frequency Per Article Over Time",
-    subtitle = "Term: 'браудера' (browder), RT Search Term: 'клинтон протесты' (clinton protests)",
+    subtitle = "Term: 'сша' (usa)
+RT Search Term: 'клинтон гражданское общество' (clinton civil society)",
     x = "Date",
-    y = "Frequency",
+    y = "Frequency"
     # Comment/uncomment caption as neeed
-    caption = "Declined terms combined."
+    # caption = "Declined terms combined."
   ) +
   scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  ggsave("klinton-protesty/plot1.png", width = 10)
+  ggsave("klinton-grazhdanksoe-obschestvo/usa.png", width = 10)
 ```
 
 ```{r}
 # Change min.freq below as needed per resultsno pulled from Python scrape.
-wordcloud(words = head$word, freq = head$count, min.freq = 18,
+wordcloud(words = head$word, freq = head$count, min.freq = 50,
   max.words=100, random.order=FALSE, rot.per=0.35, 
   colors=brewer.pal(8, "Dark2"))
 ```
@@ -172,7 +173,7 @@ multsum2 %>%
   gt() %>%
   tab_header(
     title = "Sentiment Polarization Summary",
-    subtitle = "RT Search Term: 'макфол клинтон' (mcfaul clinton)"
+    subtitle = "RT Search Term: 'клинтон гражданское общество' (clinton civil society)"
     )  %>% 
   tab_source_note(
     source_note = "Note special methodology for Russian sentiment analysis."
