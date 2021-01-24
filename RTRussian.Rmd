@@ -29,7 +29,7 @@ col_types = cols(
   URL = col_character()
 )
 
-data <- read_delim("klinton-protesty/klinton-protesty.txt", delim = "*", col_types = col_types)
+data <- read_delim("makfol/makfol.txt", delim = "*", col_types = col_types)
 
 data <- data %>% 
   filter(date != "Skipped")
@@ -43,8 +43,8 @@ data <- data %>% # This usually just strips all the commas out of the date colum
 
 # for soros.txt:
 # data <- data[-c(69, 114, 126, 168, 199),] # Adjust numbers to be rows where content = NA
-# for makfol.text:
-# data <- data[-c(17, 21),]
+# for makfol.txt:
+data <- data[-c(17, 21),]
 ```
 
 ```{r}
@@ -122,14 +122,14 @@ colnames(sums2d) <- names4 # This creates a stemmed version of the file. Unfortu
 ```{r}
 sums2 %>%
   group_by(ArtDate) %>% 
-  summarise(Frequency = sum(санкций)) %>%
+  summarise(Frequency = sum(запада)) %>%
   ggplot(aes(x = ArtDate, y = Frequency)) +
   geom_point() +
   geom_smooth(method = 'loess') +
   labs(
     title = "Term Frequency Per Article Over Time",
-    subtitle = "Term: 'санкций' (sanctions)
-RT Search Term: 'клинтон протесты' (clinton protests)",
+    subtitle = "Term: 'запада' (west)
+RT Search Term: 'макфол' (mcfaul)",
     x = "Date",
     y = "Frequency"
     # Comment/uncomment caption as neeed
@@ -137,7 +137,7 @@ RT Search Term: 'клинтон протесты' (clinton protests)",
   ) +
   scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  ggsave("klinton-protesty/sanction2.png", width = 10)
+  ggsave("makfol/west2.png", width = 10)
 ```
 
 ```{r}
