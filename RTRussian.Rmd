@@ -29,7 +29,7 @@ col_types = cols(
   URL = col_character()
 )
 
-data <- read_delim("klinton-grazhdanskoe-obschestvo.txt", delim = "*", col_types = col_types)
+data <- read_delim("klinton-grazhdanskoe-obschestvo/klinton-grazhdanskoe-obschestvo.txt", delim = "*", col_types = col_types)
 
 data <- data %>% 
   filter(date != "Skipped")
@@ -122,13 +122,13 @@ colnames(sums2d) <- names4 # This creates a stemmed version of the file. Unfortu
 ```{r}
 sums2 %>%
   group_by(ArtDate) %>% 
-  summarise(Frequency = sum(сша)) %>%
+  summarise(Frequency = sum(магнитский)) %>%
   ggplot(aes(x = ArtDate, y = Frequency)) +
   geom_point() +
   geom_smooth(method = 'loess') +
   labs(
     title = "Term Frequency Per Article Over Time",
-    subtitle = "Term: 'сша' (usa)
+    subtitle = "Term: 'магнитский' (magnitsky)
 RT Search Term: 'клинтон гражданское общество' (clinton civil society)",
     x = "Date",
     y = "Frequency"
@@ -137,7 +137,7 @@ RT Search Term: 'клинтон гражданское общество' (clinto
   ) +
   scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  ggsave("klinton-grazhdanskoe-obschestvo/usa.png", width = 10)
+  ggsave("klinton-grazhdanskoe-obschestvo/magnitsky2.png", width = 10)
 ```
 
 ```{r}
