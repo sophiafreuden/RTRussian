@@ -30,8 +30,8 @@ col_types = cols(
 )
 
 # data <- read_delim("klinton-grazhdanskoe-obschestvo/klinton-grazhdanskoe-obschestvo.txt", delim = "*", col_types = col_types)
-data <- read_delim("klinton-maidan/klinton-maidan.txt", delim = "*", col_types = col_types)
-# data <- read_delim("klinton-oranzhevaya-revolyutsiya/klinton-oranzhevaya-revolyutsiya.txt", delim = "*", col_types = col_types)
+# data <- read_delim("klinton-maidan/klinton-maidan.txt", delim = "*", col_types = col_types)
+data <- read_delim("klinton-oranzhevaya-revolyutsiya/klinton-oranzhevaya-revolyutsiya.txt", delim = "*", col_types = col_types)
 # data <- read_delim("klinton-protesty/klinton-protesty.txt", delim = "*", col_types = col_types)
 # data <- read_delim("makfol/makfol.txt", delim = "*", col_types = col_types)
 # data <- read_delim("soros/soros.txt", delim = "*", col_types = col_types)
@@ -127,14 +127,14 @@ colnames(sums2d) <- names4 # This creates a stemmed version of the file. Unfortu
 ```{r}
 sums2 %>%
   group_by(ArtDate) %>% 
-  summarise(Frequency = sum(сми)) %>%
+  summarise(Frequency = sum(мигрантов)) %>%
   ggplot(aes(x = ArtDate, y = Frequency)) +
   geom_point() +
   geom_smooth(method = 'loess') +
   labs(
     title = "Term Frequency Per Article Over Time",
-    subtitle = "Term: 'сми' (media)
-RT Search Term: 'клинтон майдан' (clinton maidan)",
+    subtitle = "Term: 'мигрантов' (migrants)
+RT Search Term: 'клинтон оранжевая революция' (clinton orange revolution)",
     x = "Date",
     y = "Frequency"
     # Comment/uncomment caption as neeed
@@ -142,7 +142,7 @@ RT Search Term: 'клинтон майдан' (clinton maidan)",
   ) +
   scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  ggsave("klinton-maidan/media.png", width = 10)
+  ggsave("klinton-oranzhevaya-revolyutsiya/migrants2.png", width = 10)
 ```
 
 ```{r}
