@@ -33,8 +33,8 @@ col_types = cols(
 # data <- read_delim("klinton-maidan/klinton-maidan.txt", delim = "*", col_types = col_types)
 # data <- read_delim("klinton-oranzhevaya-revolyutsiya/klinton-oranzhevaya-revolyutsiya.txt", delim = "*", col_types = col_types)
 # data <- read_delim("klinton-protesty/klinton-protesty.txt", delim = "*", col_types = col_types)
-data <- read_delim("makfol/makfol.txt", delim = "*", col_types = col_types)
-# data <- read_delim("soros/soros.txt", delim = "*", col_types = col_types)
+# data <- read_delim("makfol/makfol.txt", delim = "*", col_types = col_types)
+data <- read_delim("soros/soros.txt", delim = "*", col_types = col_types)
 
 data <- data %>% 
   filter(date != "Skipped")
@@ -47,9 +47,9 @@ data <- data %>% # This usually just strips all the commas out of the date colum
 # view(data)
 
 # for soros.txt:
-# data <- data[-c(69, 114, 126, 168, 199),] # Adjust numbers to be rows where content = NA
+data <- data[-c(69, 114, 126, 168, 199),] # Adjust numbers to be rows where content = NA
 # for makfol.txt:
-data <- data[-c(17, 21),]
+# data <- data[-c(17, 21),]
 ```
 
 ```{r}
@@ -133,7 +133,7 @@ sums2 %>%
   geom_smooth(method = 'loess') +
   labs(
     title = "Term Frequency Per Article Over Time",
-    subtitle = "Term: 'иммиграции' (immigration), RT Search Term: 'макфол' (mcfaul)",
+    subtitle = "Term: 'иммиграции' (immigration), RT Search Term: 'сорос' (soros)",
     x = "Date",
     y = "Frequency"
     # Comment/uncomment caption as neeed
@@ -141,7 +141,7 @@ sums2 %>%
   ) +
   scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  ggsave("makfol/immigration2.png", width = 10)
+  ggsave("soros/immigration2.png", width = 10)
 ```
 
 ```{r}
