@@ -7,6 +7,7 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
+# The purpose of this rmd is to determine how many unique RT Russian stories I scraped.
 ```
 
 ```{r}
