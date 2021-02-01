@@ -32,7 +32,7 @@ col_types = cols(
 # Select which file you want to read and leave the rest commented out.
 
 # data <- read_delim("klinton-grazhdanskoe-obschestvo/klinton-grazhdanskoe-obschestvo.txt", delim = "*", col_types = col_types)
-# data <- read_delim("klinton-maidan/klinton-maidan.txt", delim = "*", col_types = col_types)
+#  data <- read_delim("klinton-maidan/klinton-maidan.txt", delim = "*", col_types = col_types)
 # data <- read_delim("klinton-oranzhevaya-revolyutsiya/klinton-oranzhevaya-revolyutsiya.txt", delim = "*", col_types = col_types)
 # data <- read_delim("klinton-protesty/klinton-protesty.txt", delim = "*", col_types = col_types)
 data <- read_delim("makfol/makfol.txt", delim = "*", col_types = col_types)
@@ -129,21 +129,21 @@ colnames(sums2d) <- names4 # This creates a stemmed version of the file. Unfortu
 ```{r}
 sums2 %>%
   group_by(ArtDate) %>% 
-  summarise(Frequency = sum(иностранный)) %>%
+  summarise(Frequency = sum(нко)) %>%
   ggplot(aes(x = ArtDate, y = Frequency)) +
   geom_point() +
   geom_smooth(method = 'loess') +
   labs(
     title = "Term Frequency Per Article Over Time",
-    subtitle = "Term: 'иностранный' (foreign), RT Search Term: 'макфол' (mcfaul)",
+    subtitle = "Term: 'нко' (ngo), RT Search Term: 'макфол' (mcfaul)",
     x = "Date",
-    y = "Frequency",
+    y = "Frequency"
     # Comment/uncomment caption as neeed
-    caption = "Declined terms combined."
+    # caption = "Declined terms combined."
   ) +
   scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  ggsave("makfol/foreign.png", width = 10)
+  ggsave("makfol/ngo2.png", width = 10)
 ```
 
 ```{r}
