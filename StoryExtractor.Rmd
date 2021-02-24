@@ -1,0 +1,77 @@
+---
+title: "StoryExtractor"
+author: "Sophia Freuden"
+date: "2/23/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{r}
+library(tm)
+library(textclean)
+library(lubridate)
+library(tidyverse)
+```
+
+```{r}
+col_types = cols(
+  date = col_character(),
+  title = col_character(),
+  content = col_character(),
+  URL = col_character()
+)
+```
+
+```{r}
+# data <- read_delim("klinton-grazhdanskoe-obschestvo/klinton-grazhdanskoe-obschestvo.txt", delim = "*", col_types = col_types)
+#  data <- read_delim("klinton-maidan/klinton-maidan.txt", delim = "*", col_types = col_types)
+# data <- read_delim("klinton-oranzhevaya-revolyutsiya/klinton-oranzhevaya-revolyutsiya.txt", delim = "*", col_types = col_types)
+# data <- read_delim("klinton-protesty/klinton-protesty.txt", delim = "*", col_types = col_types)
+data <- read_delim("makfol/makfol.txt", delim = "*", col_types = col_types)
+# data <- read_delim("soros/soros.txt", delim = "*", col_types = col_types)
+
+data <- data %>% 
+  filter(date != "Skipped")
+
+data <- data %>% # This usually just strips all the commas out of the date column.
+  mutate(date = dmy(date)) # Be sure to double check, however.
+
+# for soros.txt:
+# data <- data[-c(69, 114, 126, 168, 199),] # Adjust numbers to be rows where content = NA
+# for makfol.txt:
+data <- data[-c(17, 21),]
+```
+
+```{r}
+corpus <- SimpleCorpus(VectorSource(data$content))
+corpus <- tm_map(corpus, stripWhitespace)
+corpus <- tm_map(corpus, content_transformer(tolower))
+corpus <- tm_map(corpus, removeNumbers)
+corpus <- tm_map(corpus, removePunctuation)
+corpus <- tm_map(corpus, removeWords, stopwords("russian"))
+
+nonstem.corpus <- corpus
+nDTM <- DocumentTermMatrix(nonstem.corpus)
+sums2 <- as.data.frame(as.matrix(nDTM))
+sums2$ArtDate <- data$date
+```
+
+```{r}
+temp <- sums2 %>% select(c(ArtDate, макфола))
+view(temp)
+print(data$URL[45])
+print(data$URL[131])
+print(data$URL[56])
+print(data$URL[17])
+print(data$URL[163])
+print(data$URL[197])
+print(data$URL[20])
+print(data$URL[67])
+print(data$URL[140])
+print(data$URL[204])
+```
+
+

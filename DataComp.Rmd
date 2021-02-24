@@ -132,9 +132,12 @@ u_klinton <- unique(all_klinton$URL)
 # klinton ukraina
 # klinton demokraticheskaya partiya
 # klinton vybory
+# klinton putin
 
 # Could do:
 # klinton soros: 59
+# klinton lavrov: 89
+# klinton nato: 183
 
 # Too small:
 # klinton makfol soros: 1
