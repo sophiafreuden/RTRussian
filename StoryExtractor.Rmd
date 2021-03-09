@@ -26,23 +26,38 @@ col_types = cols(
 ```
 
 ```{r}
-# data <- read_delim("klinton-grazhdanskoe-obschestvo/klinton-grazhdanskoe-obschestvo.txt", delim = "*", col_types = col_types)
-#  data <- read_delim("klinton-maidan/klinton-maidan.txt", delim = "*", col_types = col_types)
-# data <- read_delim("klinton-oranzhevaya-revolyutsiya/klinton-oranzhevaya-revolyutsiya.txt", delim = "*", col_types = col_types)
-# data <- read_delim("klinton-protesty/klinton-protesty.txt", delim = "*", col_types = col_types)
-# data <- read_delim("makfol/makfol.txt", delim = "*", col_types = col_types)
-data <- read_delim("soros/soros.txt", delim = "*", col_types = col_types)
+data1 <- read_delim("klinton-grazhdanskoe-obschestvo/klinton-grazhdanskoe-obschestvo.txt", delim = "*", col_types = col_types)
+data2 <- read_delim("klinton-maidan/klinton-maidan.txt", delim = "*", col_types = col_types)
+data3 <- read_delim("klinton-oranzhevaya-revolyutsiya/klinton-oranzhevaya-revolyutsiya.txt", delim = "*", col_types = col_types)
+data4 <- read_delim("klinton-protesty/klinton-protesty.txt", delim = "*", col_types = col_types)
+data5 <- read_delim("klinton-nato/klinton-nato.txt", delim = "*", col_types = col_types)
 
+# data <- read_delim("makfol/makfol.txt", delim = "*", col_types = col_types)
+# data <- read_delim("soros/soros.txt", delim = "*", col_types = col_types)
+
+# for soros.txt:
+# data <- data[-c(69, 114, 126, 168, 199),] # Adjust numbers to be rows where content = NA
+# for makfol.txt:
+# data <- data[-c(17, 21),]
+```
+
+```{r}
+# clinton
+
+data12 <- bind_rows(data1, data2)
+data123 <- bind_rows(data12, data3)
+data1234 <- bind_rows(data123, data4)
+all_clinton <- bind_rows(data1234, data5)
+
+data <- unique(all_clinton)
+```
+
+```{r}
 data <- data %>% 
   filter(date != "Skipped")
 
 data <- data %>% # This usually just strips all the commas out of the date column.
   mutate(date = dmy(date)) # Be sure to double check, however.
-
-# for soros.txt:
-data <- data[-c(69, 114, 126, 168, 199),] # Adjust numbers to be rows where content = NA
-# for makfol.txt:
-# data <- data[-c(17, 21),]
 ```
 
 ```{r}
@@ -61,36 +76,15 @@ sums2$URL <- data$URL
 ```
 
 ```{r}
-temp <- sums2 %>% select(c(ArtDate, сорос, URL))
+temp <- sums2 %>% select(c(ArtDate, европы, URL))
 temp2 <- unique(temp)
 view(temp2)
 
-print(data$URL[146]) # 18 same
-print(data$URL[109]) # 16
-print(data$URL[92]) # 11
-print(data$URL[97]) # 11 second below
-print(data$URL[37]) # 8 same
-print(data$URL[181]) # 8
-print(data$URL[36]) # 6
-print(data$URL[176]) # 6 seventh below
-print(data$URL[209]) # 6
-print(data$URL[136]) # 5
+print(data$URL[177]) #
+print(data$URL[76]) # 
+print(data$URL[31]) #
 
-# sum: 282; sample: 95 .3369
+print(data$URL[370]) #
 
-temp2 <- sums2 %>% select(c(ArtDate, сороса, URL))
-view(temp2)
-
-print(data$URL[146]) # 19 same
-print(data$URL[97]) # 13 fourth above
-print(data$URL[133]) # 12
-print(data$URL[139]) # 12
-print(data$URL[37]) # 11 same
-print(data$URL[166]) # 10 
-print(data$URL[176]) # 9 eighth above
-print(data$URL[18]) # 8
-print(data$URL[164]) # 8
-print(data$URL[165]) # 7
-
-# sum: 385; sample: 109 .2831
+# sum: ; sample:
 ```
