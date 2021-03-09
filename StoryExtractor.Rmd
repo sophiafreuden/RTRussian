@@ -80,11 +80,15 @@ temp <- sums2 %>% select(c(ArtDate, европы, URL))
 temp2 <- unique(temp)
 view(temp2)
 
-print(data$URL[177]) #
-print(data$URL[76]) # 
-print(data$URL[31]) #
-
-print(data$URL[370]) #
-
 # sum: ; sample:
+
+# top soros:
+# print(data$URL[177])
+# print(data$URL[76])
+# print(data$URL[31])
+
+# top europe 2017:
+# print(data$URL[372])
+# print(data$URL[367])
+# print(data$URL[175])
 ```
