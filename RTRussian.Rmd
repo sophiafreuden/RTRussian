@@ -112,6 +112,11 @@ sums2 <- as.data.frame(as.matrix(nDTM))
 ```{r}
 sums2$ArtDate <- data$date
 
+# To get rid of the redundancies, I add the URL here and then use the unique function to parse out redundant stories. While the URL itself isn't necessary for anything, it does serve as a helpful unique ID code that I can use to filter out redundant stories.
+
+sums2$URL <- data$URL
+sums2 <- unique(sums2)
+
 # view(sums2)
 ```
 
@@ -140,6 +145,11 @@ colnames(sums2d) <- names4 # This creates a stemmed version of the file. Unfortu
 ```
 
 ```{r}
+choice2 <- sums2 %>% select(c(ArtDate, клинтон, URL))
+choice2 <- unique(choice2)
+```
+
+```{r}
 sums2 %>%
   group_by(ArtDate) %>% 
   summarise(Frequency = sum(нко)) %>%
@@ -148,7 +158,7 @@ sums2 %>%
   geom_smooth(method = 'loess') +
   labs(
     title = "Term Frequency Per Article Over Time",
-    subtitle = "Term: 'нко' (ngo), RT Search Term: 'макфол' (mcfaul)",
+    subtitle = "Term: 'нко' (ngo), RT Search Term: N/A, 'Клинтон' (Clinton) Terms",
     x = "Date",
     y = "Frequency"
     # Comment/uncomment caption as neeed
@@ -156,7 +166,7 @@ sums2 %>%
   ) +
   scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  ggsave("makfol/ngo2.png", width = 10)
+  ggsave("all-klinton/ngo2.png", width = 10)
 ```
 
 ```{r}
@@ -198,7 +208,7 @@ multsum2 %>%
   gt() %>%
   tab_header(
     title = "Sentiment Polarization Summary",
-    subtitle = "RT Search Term: 'клинтон гражданское общество' (clinton civil society)"
+    subtitle = "RT Search Term: N/A, 'Клинтон' (Clinton) Terms"
     )  %>% 
   tab_source_note(
     source_note = "Note special methodology for Russian sentiment analysis."
@@ -211,7 +221,7 @@ multsum2 %>%
     V5 = "3rd Qu.",
     V6 = "Max."
     ) %>% 
-  gtsave("table1.png", zoom = 2.5, expand = 10)
+  gtsave("all-klinton/table1.png", zoom = 2.5, expand = 10)
 ```
 
 ```{r}
