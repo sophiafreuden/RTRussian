@@ -28,30 +28,43 @@ col_types = cols(
   content = col_character(),
   URL = col_character()
 )
+```
 
+```{r}
 # Select which file you want to read and leave the rest commented out.
 
-# data <- read_delim("klinton-grazhdanskoe-obschestvo/klinton-grazhdanskoe-obschestvo.txt", delim = "*", col_types = col_types)
-#  data <- read_delim("klinton-maidan/klinton-maidan.txt", delim = "*", col_types = col_types)
-# data <- read_delim("klinton-oranzhevaya-revolyutsiya/klinton-oranzhevaya-revolyutsiya.txt", delim = "*", col_types = col_types)
-# data <- read_delim("klinton-protesty/klinton-protesty.txt", delim = "*", col_types = col_types)
-data <- read_delim("makfol/makfol.txt", delim = "*", col_types = col_types)
+data1 <- read_delim("klinton-grazhdanskoe-obschestvo/klinton-grazhdanskoe-obschestvo.txt", delim = "*", col_types = col_types)
+data2 <- read_delim("klinton-maidan/klinton-maidan.txt", delim = "*", col_types = col_types)
+data3 <- read_delim("klinton-oranzhevaya-revolyutsiya/klinton-oranzhevaya-revolyutsiya.txt", delim = "*", col_types = col_types)
+data4 <- read_delim("klinton-protesty/klinton-protesty.txt", delim = "*", col_types = col_types)
+data5 <- read_delim("klinton-nato/klinton-nato.txt", delim = "*", col_types = col_types)
+
+# data <- read_delim("makfol/makfol.txt", delim = "*", col_types = col_types)
 # data <- read_delim("soros/soros.txt", delim = "*", col_types = col_types)
-
-data <- data %>% 
-  filter(date != "Skipped")
-
-# view(data)
-
-data <- data %>% # This usually just strips all the commas out of the date column.
-  mutate(date = dmy(date)) # Be sure to double check, however.
-
-# view(data)
 
 # for soros.txt:
 # data <- data[-c(69, 114, 126, 168, 199),] # Adjust numbers to be rows where content = NA
 # for makfol.txt:
-data <- data[-c(17, 21),]
+# data <- data[-c(17, 21),]
+```
+
+```{r}
+# clinton
+
+data12 <- bind_rows(data1, data2)
+data123 <- bind_rows(data12, data3)
+data1234 <- bind_rows(data123, data4)
+all_clinton <- bind_rows(data1234, data5)
+
+data <- unique(all_clinton)
+```
+
+```{r}
+data <- data %>% 
+  filter(date != "Skipped")
+
+data <- data %>% # This usually just strips all the commas out of the date column.
+  mutate(date = dmy(date)) # Be sure to double check, however.
 ```
 
 ```{r}
@@ -160,14 +173,20 @@ col_types2 <- cols(
 )
 
 rudict <- read_csv("russiandict.csv", col_types = col_types2)
+
+view(rudict$score)
 ```
 
 ```{r}
 ru_sentiment <- sums %>% 
   inner_join(rudict, by = "word")
 
+# view(ru_sentiment$score)
+
 ru_sentiment <- ru_sentiment %>% 
   mutate(mult = (count * score)) # So this just fundamentally differs from the RTEnglish file in its methodology. It's important to multiply the terms by the frequency, so then we get a true average for the RT Russian search term.
+
+# view(ru_sentiment)
 
 multsum <- tibble(summary(ru_sentiment$mult))
 

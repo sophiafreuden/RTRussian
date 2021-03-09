@@ -62,7 +62,8 @@ sums2$URL <- data$URL
 
 ```{r}
 temp <- sums2 %>% select(c(ArtDate, сорос, URL))
-view(temp)
+temp2 <- unique(temp)
+view(temp2)
 
 print(data$URL[146]) # 18 same
 print(data$URL[109]) # 16
