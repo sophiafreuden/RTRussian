@@ -76,11 +76,26 @@ sums2$URL <- data$URL
 ```
 
 ```{r}
-temp <- sums2 %>% select(c(ArtDate, европы, URL))
+temp <- sums2 %>% select(c(ArtDate, клинтон, URL))
 temp2 <- unique(temp)
 view(temp2)
 
-# sum: ; sample:
+temp2 <- temp2 %>% arrange(desc(клинтон))
+head1 <- head(temp2, 10)
+view(head1)
+
+print(head1$URL[1])
+print(head1$URL[2])
+print(head1$URL[3])
+print(head1$URL[4])
+print(head1$URL[5])
+print(head1$URL[6])
+print(head1$URL[7])
+print(head1$URL[8])
+print(head1$URL[9])
+print(head1$URL[10])
+
+# sum: 900; sample: 145, 0.1611 > 0.10
 
 # top soros:
 # print(data$URL[177])
