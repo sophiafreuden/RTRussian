@@ -33,30 +33,30 @@ col_types = cols(
 ```{r}
 # Select which file you want to read and leave the rest commented out.
 
-data1 <- read_delim("klinton-grazhdanskoe-obschestvo/klinton-grazhdanskoe-obschestvo.txt", delim = "*", col_types = col_types)
-data2 <- read_delim("klinton-maidan/klinton-maidan.txt", delim = "*", col_types = col_types)
-data3 <- read_delim("klinton-oranzhevaya-revolyutsiya/klinton-oranzhevaya-revolyutsiya.txt", delim = "*", col_types = col_types)
-data4 <- read_delim("klinton-protesty/klinton-protesty.txt", delim = "*", col_types = col_types)
-data5 <- read_delim("klinton-nato/klinton-nato.txt", delim = "*", col_types = col_types)
+# data1 <- read_delim("klinton-grazhdanskoe-obschestvo/klinton-grazhdanskoe-obschestvo.txt", delim = "*", col_types = col_types)
+# data2 <- read_delim("klinton-maidan/klinton-maidan.txt", delim = "*", col_types = col_types)
+# data3 <- read_delim("klinton-oranzhevaya-revolyutsiya/klinton-oranzhevaya-revolyutsiya.txt", delim = "*", col_types = col_types)
+# data4 <- read_delim("klinton-protesty/klinton-protesty.txt", delim = "*", col_types = col_types)
+# data5 <- read_delim("klinton-nato/klinton-nato.txt", delim = "*", col_types = col_types)
 
-# data <- read_delim("makfol/makfol.txt", delim = "*", col_types = col_types)
+data <- read_delim("makfol/makfol.txt", delim = "*", col_types = col_types)
 # data <- read_delim("soros/soros.txt", delim = "*", col_types = col_types)
 
 # for soros.txt:
 # data <- data[-c(69, 114, 126, 168, 199),] # Adjust numbers to be rows where content = NA
 # for makfol.txt:
-# data <- data[-c(17, 21),]
+data <- data[-c(17, 21),]
 ```
 
 ```{r}
 # clinton
 
-data12 <- bind_rows(data1, data2)
-data123 <- bind_rows(data12, data3)
-data1234 <- bind_rows(data123, data4)
-all_clinton <- bind_rows(data1234, data5)
-
-data <- unique(all_clinton)
+# data12 <- bind_rows(data1, data2)
+# data123 <- bind_rows(data12, data3)
+# data1234 <- bind_rows(data123, data4)
+# all_clinton <- bind_rows(data1234, data5)
+# 
+# data <- unique(all_clinton)
 ```
 
 ```{r}
@@ -65,6 +65,8 @@ data <- data %>%
 
 data <- data %>% # This usually just strips all the commas out of the date column.
   mutate(date = dmy(date)) # Be sure to double check, however.
+
+data <- unique(data)
 ```
 
 ```{r}
@@ -145,20 +147,20 @@ colnames(sums2d) <- names4 # This creates a stemmed version of the file. Unfortu
 ```
 
 ```{r}
-choice2 <- sums2 %>% select(c(ArtDate, партии, URL))
+choice2 <- sums2 %>% select(c(ArtDate, макфол, URL))
 choice2 <- unique(choice2)
 ```
 
 ```{r}
 sums2 %>%
   group_by(ArtDate) %>% 
-  summarise(Frequency = sum(партии)) %>%
+  summarise(Frequency = sum(макфол)) %>%
   ggplot(aes(x = ArtDate, y = Frequency)) +
   geom_point() +
-  # geom_smooth(method = 'loess') +
+  geom_smooth(method = 'loess') +
   labs(
     title = "Term Frequency Per Article Over Time",
-    subtitle = "Term: 'партии' (party/parties), RT Search Term: N/A, 'Клинтон' (Clinton) Terms",
+    subtitle = "Term: 'макфол' (McFaul), RT Search Term: 'макфол' (McFaul)",
     x = "Date",
     y = "Frequency"
     # Comment/uncomment caption as neeed
@@ -166,7 +168,7 @@ sums2 %>%
   ) +
   scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  ggsave("all-klinton/party.png", width = 10)
+  ggsave("makfol/makfol.png", width = 10)
 ```
 
 ```{r}
